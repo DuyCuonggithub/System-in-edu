@@ -31,6 +31,45 @@ graph LR
     end
 ```
 
+### 🐳 Kiến trúc Docker (Docker Architecture)
+
+Toàn bộ hệ thống được container hóa giúp đảm bảo tính nhất quán giữa các môi trường phát triển và triển khai. Các dịch vụ chính bao gồm:
+
+```mermaid
+graph TD
+    subgraph "Docker Network"
+        subgraph "Airflow Stack"
+            WS[Webserver]
+            SC[Scheduler]
+            WK[Worker]
+            RD[Redis - Broker]
+            DB_META[(Postgres - Metadata)]
+        end
+        
+        subgraph "Storage Stack"
+            MINIO[(MinIO - Data Lake)]
+            DB_DW[(PostgreSQL - Warehouse)]
+        end
+        
+        subgraph "App Stack"
+            ST[Streamlit App]
+        end
+        
+        WS --- DB_META
+        SC --- RD
+        WK --- RD
+        WK --- MINIO
+        WK --- DB_DW
+        ST --- DB_DW
+    end
+```
+
+*   **Airflow Webserver/Scheduler/Worker**: Điều phối và thực hiện các script Python (Scraping, ETL).
+*   **Redis**: Làm nhiệm vụ hàng đợi (Broker) cho Celery Executor của Airflow.
+*   **MinIO**: Lưu trữ file thô (CSV/Parquet) dưới dạng Object Storage.
+*   **Postgres Warehouse**: Lưu trữ dữ liệu có cấu trúc và phục vụ truy vấn cho dbt/Streamlit.
+*   **Docker Volumes**: Đảm bảo dữ liệu trong database và MinIO không bị mất khi container khởi động lại.
+
 ---
 
 ## 🛠 Công nghệ Sử dụng (Tech Stack)
@@ -110,8 +149,8 @@ graph LR
 ---
 
 ## 📧 Liên hệ
-*   **Tác giả:** Đặng Duy Cường
-*   **Email:** dcuong1511@gmail.com
+*   **Tác giả:** Nguyễn Duy Cường
+*   **Email:** [Email của bạn]
 *   **GitHub:** [DuyCuonggithub](https://github.com/DuyCuonggithub)
 
 ---
