@@ -1,0 +1,14 @@
+udemy_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      # Chạy từ Windows host: dùng localhost + port 5433 (mapped ra ngoài)
+      # Nếu chạy trong Docker (Airflow): đổi thành host: postgres_dw, port: 5432
+      host: udemy_data_warehouse
+      port: 5432
+      user: user_dw
+      password: password_dw
+      dbname: udemy_dw
+      schema: public
+      threads: 4

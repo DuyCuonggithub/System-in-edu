@@ -1,0 +1,21 @@
+# Log của Airflow
+Data_Pipeline/logs/
+*.log
+
+# Dữ liệu trình duyệt và Profile của Scraper
+Scraper/udemy_profile*/
+Singleton*
+
+# Dữ liệu CSV và kết quả trung gian
+*.csv
+Scraper/log/
+
+# Thư mục môi trường ảo và thư viện
+node_modules/
+__pycache__/
+.venv/
+env/
+
+# File cấu hình cá nhân
+.vscode/
+.idea/
