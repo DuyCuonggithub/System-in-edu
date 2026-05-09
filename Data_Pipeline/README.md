@@ -110,8 +110,8 @@ graph LR
 ---
 
 ## 📧 Liên hệ
-*   **Tác giả:** Nguyễn Duy Cường
-*   **Email:** [Email của bạn]
+*   **Tác giả:** Đặng Duy Cường
+*   **Email:** dcuong1511@gmail.com
 *   **GitHub:** [DuyCuonggithub](https://github.com/DuyCuonggithub)
 
 ---
