@@ -72,6 +72,33 @@ graph TD
 
 ---
 
+## 💎 Quy trình Xử lý Dữ liệu (Medallion Architecture)
+
+Dữ liệu được vận chuyển và tinh chế qua 3 tầng tiêu chuẩn để đảm bảo độ tin cậy và khả năng phân tích:
+
+### 1. 🟫 Tầng Bronze (Raw Data)
+*   **Nguồn:** Dữ liệu thô thu thập trực tiếp từ script Playwright Scraper.
+*   **Lưu trữ:** MinIO Object Storage.
+*   **Đặc điểm:** Dữ liệu nguyên bản, chưa qua chỉnh sửa, được lưu dưới định dạng CSV hoặc Parquet kèm theo timestamp để phục vụ việc truy xuất lịch sử (Audit).
+
+### 2. ⬜ Tầng Silver (Cleaned Data)
+*   **Xử lý:** Airflow kích hoạt các task ETL để đọc dữ liệu từ Bronze, thực hiện làm sạch.
+*   **Lưu trữ:** PostgreSQL (Schema: `silver`).
+*   **Đặc điểm:** 
+    *   Loại bỏ các bản ghi trùng lặp (Deduplication).
+    *   Chuẩn hóa kiểu dữ liệu (Date, Numeric, String).
+    *   Xử lý giá trị thiếu (Missing values) và lọc bỏ các bản ghi lỗi.
+
+### 3. 🟨 Tầng Gold (Business-Ready Data)
+*   **Xử lý:** dbt (Data Build Tool) thực hiện các phép biến đổi phức tạp, tính toán các chỉ số kinh doanh.
+*   **Lưu trữ:** PostgreSQL (Schema: `gold` hoặc các Materialized Views).
+*   **Đặc điểm:**
+    *   Dữ liệu đã được tổng hợp (Aggregated) theo các chiều: Theo thời gian, theo chủ đề khóa học, theo mức giá.
+    *   Cấu trúc được tối ưu hóa cho các truy vấn của Dashboard Streamlit.
+    *   Chứa các bảng KPI quan trọng: Tổng doanh thu ước tính, số lượng học viên tăng trưởng, xếp hạng khóa học hot.
+
+---
+
 ## 🛠 Công nghệ Sử dụng (Tech Stack)
 
 ### 1. Data Collection & Orchestration
